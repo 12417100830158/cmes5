@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-DAY — Quantum Surveillance Simulator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="year-badge">SIMULATION // 2026</div>
+    <h1 class="glitch">Q<span>-</span>DAY</h1>
+    <span class="header-tag">Quantum Surveillance Policy Simulator</span>
+    <p class="header-sub">You are a government intelligence director. Quantum decryption is 8 years away. Every decision you make today will shape what gets exposed — and to whom.</p>
+  </div>
+
+  <div class="sim-grid">
+
+    <!-- Controls -->
+    <div class="panel controls">
+      <div class="panel-label">Your Policy Levers</div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-name">Data collection rate</span>
+          <span class="slider-value danger" id="collect-val">50%</span>
+        </div>
+        <div class="slider-desc">How aggressively your agency harvests encrypted civilian data — messages, medical records, financial transactions.</div>
+        <input type="range" class="danger" id="collect" min="0" max="100" value="50">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-name">Quantum investment</span>
+          <span class="slider-value" id="invest-val">50%</span>
+        </div>
+        <div class="slider-desc">Budget allocated to accelerating your nation's quantum decryption capability — versus other public spending.</div>
+        <input type="range" id="invest" min="0" max="100" value="50">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-name">Public transparency</span>
+          <span class="slider-value warn" id="transparency-val">50%</span>
+        </div>
+        <div class="slider-desc">How much you disclose to citizens about the timeline, the data being stored, and its future use.</div>
+        <input type="range" class="warn" id="transparency" min="0" max="100" value="50">
+      </div>
+    </div>
+
+    <!-- Security dashboard -->
+    <div class="panel security">
+      <div class="panel-label">Security Gains</div>
+
+      <div class="numbers-row">
+        <div>
+          <div class="big-number blue" id="threats-val">—</div>
+          <div class="big-label">Threats intercepted / yr</div>
+        </div>
+        <div>
+          <div class="big-number blue" id="geo-val">—</div>
+          <div class="big-label">Geopolitical advantage</div>
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-header">
+          <span class="metric-name">National security score</span>
+          <span class="metric-value blue" id="sec-score">—</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill blue" id="sec-bar" style="width:50%"></div></div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-header">
+          <span class="metric-name">Intelligence advantage vs. adversaries</span>
+          <span class="metric-value green" id="intel-score">—</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill green" id="intel-bar" style="width:50%"></div></div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-header">
+          <span class="metric-name">Q-Day readiness</span>
+          <span class="metric-value amber" id="ready-score">—</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill amber" id="ready-bar" style="width:50%"></div></div>
+      </div>
+
+      <div class="q-clock">
+        <div class="clock-dot"></div>
+        <span id="qday-est">Estimated Q-Day: calculating...</span>
+      </div>
+    </div>
+
+    <!-- Rights dashboard -->
+    <div class="panel rights">
+      <div class="panel-label">Rights Violations</div>
+
+      <div class="numbers-row">
+        <div>
+          <div class="big-number red" id="records-val">—</div>
+          <div class="big-label">Citizen records stored</div>
+        </div>
+        <div>
+          <div class="big-number red" id="exposure-val">—</div>
+          <div class="big-label">Yrs until exposure</div>
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-header">
+          <span class="metric-name">Privacy violation index</span>
+          <span class="metric-value red" id="priv-score">—</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill red" id="priv-bar" style="width:50%"></div></div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-header">
+          <span class="metric-name">Democratic trust index</span>
+          <span class="metric-value blue" id="trust-score">—</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill blue" id="trust-bar" style="width:50%"></div></div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-header">
+          <span class="metric-name">Consent deficit</span>
+          <span class="metric-value red" id="consent-score">—</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill red" id="consent-bar" style="width:50%"></div></div>
+      </div>
+
+      <div class="q-clock">
+        <div class="clock-dot"></div>
+        <span id="at-risk">Citizens at risk: calculating...</span>
+      </div>
+    </div>
+
+    <!-- Dilemma panel -->
+    <div class="panel dilemma dilemma-panel">
+      <div class="panel-label">Ethical Tension</div>
+      <p class="dilemma-text" id="dilemma-text">Adjust the sliders to see how your decisions create ethical trade-offs.</p>
+
+      <div class="tension-row">
+        <span class="tension-label">Low tension</span>
+        <div class="tension-track">
+          <div class="tension-thumb" id="tension-thumb" style="left: 50%"></div>
+        </div>
+        <span class="tension-label">High tension</span>
+        <span class="tension-value" id="tension-val">—</span>
+      </div>
+
+      <div class="verdict-box">
+        <div class="verdict-title">// Framework note</div>
+        <span id="verdict-text">Move the sliders to generate a policy scenario.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- About -->
+  <div class="about">
+    <div class="about-title">// About this tool</div>
+    <p><strong>Created by:</strong> [Your Name] — [Course Name], [University], 2026</p>
+    <p><strong>The dilemma:</strong> Quantum computers, expected within the next decade, will be able to break all current encryption standards. Intelligence agencies are already collecting encrypted civilian data today — messages, medical records, financial transactions — to decrypt retroactively once capability exists. This is called "harvest now, decrypt later" (HNDL). Citizens have not consented to this, and may not know it is happening.</p>
+    <p>This simulator asks: is storing data you cannot yet read a rights violation? Does the answer change if your adversaries are doing the same? Who bears the cost — and who gets protected?</p>
+    <p><strong>Ethical frameworks applied:</strong> Justice as fairness (Rawls) — would you accept these policies if you didn't know whether you were the official or the citizen? Procedural ethics — is secret collection illegitimate regardless of outcome?</p>
+    <p class="disclaimer">Note: All figures are illustrative and designed to communicate the scale of trade-offs, not precise predictions.</p>
+
+    <div class="sources">
+      <div class="about-title" style="margin-bottom:10px;">// Further reading</div>
+      <div class="source-item">Federal Reserve Board (2025). "Harvest Now Decrypt Later": Examining Post-Quantum Cryptography and the Data Privacy Risks for Distributed Ledger Networks. <a href="https://www.federalreserve.gov/econres/feds/2025093pap.pdf" target="_blank">federalreserve.gov</a></div>
+      <div class="source-item">MDPI Telecom (2025). Harvest-Now, Decrypt-Later: A Temporal Cybersecurity Risk in the Quantum Transition. <a href="https://www.mdpi.com/2673-4001/6/4/100" target="_blank">mdpi.com</a></div>
+      <div class="source-item">Berberich, J. et al. (2023). Ethics of Quantum Computing: an Outline. Philosophy & Technology, Springer. <a href="https://link.springer.com/article/10.1007/s13347-023-00651-6" target="_blank">springer.com</a></div>
+      <div class="source-item">Hoofnagle & Garfinkel (2024). Developing a human rights compatible governance framework for quantum computing. Cambridge University Press. <a href="https://www.cambridge.org/core/journals/research-directions-quantum-technologies/article/developing-a-humanrights-compatible-governance-framework-for-quantum-computing" target="_blank">cambridge.org</a></div>
+      <div class="source-item">Masaar (2023). Quantum Computers: Ethical Dilemmas and Human Rights Challenges. <a href="https://masaar.net/en/quantum-computers-ethical-dilemmas-and-human-rights-challenges/" target="_blank">masaar.net</a></div>
+    </div>
+  </div>
+
+</div>
+<script src="js/simulator.js"></script>
+</body>
+</html>
