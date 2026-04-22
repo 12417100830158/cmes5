@@ -61,6 +61,60 @@
       font-size: 14px;
     }
 
+    /* Controls master panel */
+    .controls-master {
+      margin-bottom: 0;
+      border-color: var(--accent-blue);
+      background: rgba(59,143,255,0.04);
+    }
+    .controls-master-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .controls-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+    .input-badge {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+      padding: 3px 8px;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+    .sliders-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 32px;
+    }
+    @media (max-width: 640px) {
+      .sliders-row { grid-template-columns: 1fr; gap: 24px; }
+    }
+    /* Flow arrow */
+    .flow-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 0 8px;
+      opacity: 0.4;
+    }
+    .flow-arrow-line { width: 1px; height: 16px; background: var(--accent-blue); }
+    .flow-arrow-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-blue); }
+    .flow-arrow-head { font-size: 10px; color: var(--accent-blue); line-height: 1; }
+    /* Override sim-grid to 3 cols for outputs only */
+    .sim-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+    .sim-grid .dilemma-panel { grid-column: 1 / -1; }
+    @media (max-width: 760px) {
+      .sim-grid { grid-template-columns: 1fr !important; }
+    }
     /* Back button */
     .back-btn {
       display: inline-flex;
@@ -136,12 +190,17 @@
       <p class="header-sub">You are a government intelligence director. Quantum decryption is 8 years away. Every decision you make today will shape what gets exposed — and to whom.</p>
     </div>
 
-    <div class="sim-grid">
+    <!-- Controls — full width, visually separated as input zone -->
+    <div class="panel controls controls-master">
+      <div class="controls-master-header">
+        <div>
+          <div class="panel-label" style="margin-bottom: 4px;">Your Policy Levers</div>
+          <p class="controls-hint">Adjust these three sliders — the panels below will react in real time.</p>
+        </div>
+        <div class="input-badge">INPUT</div>
+      </div>
 
-      <!-- Controls -->
-      <div class="panel controls">
-        <div class="panel-label">Your Policy Levers</div>
-
+      <div class="sliders-row">
         <div class="slider-group">
           <div class="slider-header">
             <span class="slider-name">Data collection rate</span>
@@ -169,6 +228,16 @@
           <input type="range" class="warn" id="transparency" min="0" max="100" value="50">
         </div>
       </div>
+    </div>
+
+    <!-- Arrow connector -->
+    <div class="flow-arrow">
+      <div class="flow-arrow-line"></div>
+      <div class="flow-arrow-label">outputs</div>
+      <div class="flow-arrow-head">▼</div>
+    </div>
+
+    <div class="sim-grid">
 
       <!-- Security dashboard -->
       <div class="panel security">
