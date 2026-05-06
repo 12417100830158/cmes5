@@ -1,388 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q-DAY — Quantum Surveillance Simulator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YOUR FILE — Q-Day Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    /* Fade transition states */
-    #about-section {
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    #about-section.fade-out {
-      opacity: 0;
-      transform: translateY(-16px);
-      pointer-events: none;
-    }
-
-    #sim-section {
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      opacity: 0;
-      transform: translateY(16px);
-      display: none;
-    }
-
-    #sim-section.fade-in {
-      opacity: 1;
-      transform: translateY(0);
-      display: block;
-    }
-
-    /* CTA button */
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 28px;
-      padding: 14px 28px;
-      background: transparent;
-      border: 1px solid var(--accent-blue);
-      color: var(--accent-blue);
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .cta-btn:hover {
-      background: var(--accent-blue);
-      color: var(--bg);
-    }
-
-    .cta-btn::after {
-      content: '→';
-      font-size: 14px;
-    }
-
-    /* Controls master panel */
-    .controls-master {
-      margin-bottom: 0;
-      border-color: var(--accent-blue);
-      background: rgba(59,143,255,0.04);
-    }
-    .controls-master-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 24px;
-    }
-    .controls-hint {
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      margin-top: 2px;
-    }
-    .input-badge {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: var(--accent-blue);
-      border: 1px solid var(--accent-blue);
-      padding: 3px 8px;
-      opacity: 0.6;
-      flex-shrink: 0;
-    }
-    .sliders-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 32px;
-    }
-    @media (max-width: 640px) {
-      .sliders-row { grid-template-columns: 1fr; gap: 24px; }
-    }
-    /* Flow arrow */
-    .flow-arrow {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 12px 0 8px;
-      opacity: 0.4;
-    }
-    .flow-arrow-line { width: 1px; height: 16px; background: var(--accent-blue); }
-    .flow-arrow-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-blue); }
-    .flow-arrow-head { font-size: 10px; color: var(--accent-blue); line-height: 1; }
-    /* Override sim-grid to 3 cols for outputs only */
-    .sim-grid { grid-template-columns: 1fr 1fr 1fr !important; }
-    .sim-grid .dilemma-panel { grid-column: 1 / -1; }
-    @media (max-width: 760px) {
-      .sim-grid { grid-template-columns: 1fr !important; }
-    }
-    /* Back button */
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 32px;
-      padding: 8px 16px;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .back-btn:hover {
-      border-color: var(--text-secondary);
-      color: var(--text-primary);
-    }
-
-    .back-btn::before {
-      content: '←';
-      font-size: 12px;
-    }
-  </style>
 </head>
 <body>
-<div class="container">
+<div class="alert-ov red" id="av-red"></div>
+<div class="alert-ov white" id="av-white"></div>
 
-  <!-- ABOUT SECTION (shown first) -->
-  <div id="about-section">
-    <div class="header">
-      <div class="year-badge">SIMULATION // 2026</div>
-      <h1 class="glitch">Q<span>-</span>DAY</h1>
-      <span class="header-tag">Quantum Surveillance Policy Simulator</span>
+<!-- NAV -->
+<nav class="nav-menu" id="nav-menu">
+  <button class="nav-link" onclick="navAbout()">About</button>
+  <span class="nav-sep">·</span>
+  <button class="nav-link" onclick="navChoices()">Policy choices</button>
+</nav>
+
+<!-- ═══ SCREEN: ABOUT ═══ -->
+<div class="screen" id="s-about">
+  <div class="wrap">
+    <div class="sec-header" style="padding-bottom:24px;">
+      <div class="badge">About this tool</div>
+      <h2 style="font-size:clamp(28px,5vw,42px);">Q<span>-</span>DAY</h2>
     </div>
-
     <div class="about">
       <div class="about-title">// About this tool</div>
       <p><strong>Created by:</strong> Mai — Computational Social Science, University of Amsterdam, 2026</p>
-      <p><strong>The dilemma:</strong> Quantum computers, expected within the next decade, will be able to break all current encryption standards. Intelligence agencies are already collecting encrypted civilian data today — messages, medical records, financial transactions — to decrypt retroactively once capability exists. This is called "harvest now, decrypt later" (HNDL). Citizens have not consented to this, and may not know it is happening.</p>
-      <p>This simulator asks: is storing data you cannot yet read a rights violation? Does the answer change if your adversaries are doing the same? Who bears the cost — and who gets protected?</p>
-      <p><strong>Ethical frameworks applied:</strong> Justice as fairness (Rawls) — would you accept these policies if you didn't know whether you were the official or the citizen? Procedural ethics — is secret collection illegitimate regardless of outcome?</p>
-      <p class="disclaimer">Note: All figures are illustrative and designed to communicate the scale of trade-offs, not precise predictions.</p>
+      <p><i>Quantum computing utilises quantum mechanics to solve complex problems faster than even the most powerful classical computers. While emerging as a promising technology for scientific breakthroughs, it brings forward ethical concerns. There is a possibility that quantum computing can break through current encryption algorithms: “Most of our digital infrastructure, and basically anything we do online—whether it is video conferencing, sending e-mails, or accessing our online bank account—is encrypted through cryptographic protocols based on the difficulty of solving factorization problems (i.e., the RSA algorithm)” (Possati, 2023). These factorisation problems and algorithms that  encryptions rely on are currently secure as it takes thousands of years to solve the problem; however, with quantum computing, the time to solve find these factors is completely reduced, making it possible to decrypt any communication and code and posing serious security concern: “Privacy and intelligence will be seriously damaged, and governments will face major problems as they try to defend their communications” (Possati, 2023). </i></p>
+      <p>
+        <strong style="color: red;">The dilemma:</strong>
+        <span style="color: white;"> Many entities, including intelligence agencies, hackers, and other institutions, are currently collecting encrypted civilian data, intending to decrypt it retroactively once quantum computers become available (Cooper et al., 2024; Jena, 2025; Kagai et al., 2025; Mascelli & Rodden, 2023). This practice raises ethical questions of consent, as citizens have not agreed to such data collection and may be unaware that it is occurring. This tool applies Rawls's veil of ignorance: choose the rules before you know your role.</span>
+      <p><strong>Purpose:</strong> This tool aims to inform people about quantum computing and the potential threat to data privacy and cybersecurity as a result of the technology. Hopefully, it can provide some information and insights for users to engage in discussions about this emerging problem and possible solutions to advocate for.</p>
 
+      </p>      <p><strong>Frameworks applied:</strong> Justice as fairness (Rawls), procedural ethics, ethics of care.</p>
+      <p class="disclaimer">Data shown is illustrative — generated to communicate the scale of the ethical problem. The program it describes is real.</p>
       <div class="sources">
-        <div class="about-title" style="margin-bottom:10px;">// Further reading</div>
-        <div class="source-item">Federal Reserve Board (2025). "Harvest Now Decrypt Later": Examining Post-Quantum Cryptography and the Data Privacy Risks for Distributed Ledger Networks. <a href="https://www.federalreserve.gov/econres/feds/2025093pap.pdf" target="_blank">federalreserve.gov</a></div>
-        <div class="source-item">MDPI Telecom (2025). Harvest-Now, Decrypt-Later: A Temporal Cybersecurity Risk in the Quantum Transition. <a href="https://www.mdpi.com/2673-4001/6/4/100" target="_blank">mdpi.com</a></div>
-        <div class="source-item">Berberich, J. et al. (2023). Ethics of Quantum Computing: an Outline. Philosophy & Technology, Springer. <a href="https://link.springer.com/article/10.1007/s13347-023-00651-6" target="_blank">springer.com</a></div>
-        <div class="source-item">Hoofnagle & Garfinkel (2024). Developing a human rights compatible governance framework for quantum computing. Cambridge University Press. <a href="https://www.cambridge.org/core/journals/research-directions-quantum-technologies/article/developing-a-humanrights-compatible-governance-framework-for-quantum-computing" target="_blank">cambridge.org</a></div>
-        <div class="source-item">Masaar (2023). Quantum Computers: Ethical Dilemmas and Human Rights Challenges. <a href="https://masaar.net/en/quantum-computers-ethical-dilemmas-and-human-rights-challenges/" target="_blank">masaar.net</a></div>
+        <div class="about-title" style="margin-bottom:10px;">// Bibliography</div>
+        <div class="src">Cooper, D., Moody, D., Perlner, R., Regenscheid, A., &amp; Robinson, A. (2024). Transition to Post-Quantum Cryptography Standards. National Institute of Standards and Technology. <a href="https://doi.org/10.6028/nist.ir.8547.ipd" target="_blank">doi.org</a></div>
+        <div class="src">Desouches, I. (2024, April). Quantum Initiatives Worldwide 2024 - Qureca. Qureca. <a href="https://www.qureca.com/quantum-initiatives-worldwide/" target="_blank">qureca.com</a></div>
+        <div class="src">European Union. (2016, April 27). REGULATION (EU) 2016/679 (GDPR). Europa.eu. <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" target="_blank">eur-lex.europa.eu</a></div>
+        <div class="src">IBM. (n.d.). Quantum Computing Roadmap. IBM. Retrieved May 6, 2026. <a href="https://www.ibm.com/roadmaps/quantum/" target="_blank">ibm.com</a></div>
+        <div class="src">Jena, J. (2025). The Quantum Security Deadline: Building Crypto-Agility Against Harvest Now, Decrypt Later Threats. European Journal of Computer Science and Information Technology, 13(52), 35–52. <a href="https://doi.org/10.37745/ejcsit.2013/vol13n523552" target="_blank">doi.org</a></div>
+        <div class="src">Kagai, F., Branch, P., But, J., &amp; Allen, R. (2025). Harvest-Now, Decrypt-Later: A Temporal Cybersecurity Risk in the Quantum Transition. Telecom, 6(4), 100. <a href="https://doi.org/10.3390/telecom6040100" target="_blank">doi.org</a></div>
+        <div class="src">Mascelli, J., &amp; Rodden, M. (2023). “Harvest Now Decrypt Later”: Examining Post-Quantum Cryptography and Data Privacy Risks. Elsevier. <a href="https://doi.org/10.17016/FEDS.2025.093" target="_blank">doi.org</a></div>
+        <div class="src">OECD. (2025). An Overview of National Strategies and Policies for Quantum Technologies. OECD Digital Economy Papers. <a href="https://doi.org/10.1787/5e55e7ab-en" target="_blank">oecd.org</a></div>
+        <div class="src">Possati, L. M. (2023). Ethics of Quantum Computing: an Outline. Philosophy &amp; Technology, 36(3). <a href="https://doi.org/10.1007/s13347-023-00651-6" target="_blank">springer.com</a></div>
+        <div class="src">SRI International. (2025, March 26). New data on the growing quantum industry. <a href="https://www.sri.com/press/story/new-data-on-the-growing-quantum-industry/" target="_blank">sri.com</a></div>
+        <div class="src">Swayne, M. (2026, April 14). Global Quantum Computing Market to Double by 2028. The Quantum Insider. <a href="https://thequantuminsider.com/2026/04/14/global-quantum-computing-market-to-double-by-2028-reaching-3-billion-in-revenue-qed-c-state-of-the-global-quantum-industry-2026-report-finds/" target="_blank">thequantuminsider.com</a></div>
+        <div class="src">AI statement: Claude and ChatGPT was used to assist the (code) development of the application.</div>
+
       </div>
     </div>
-
-    <div style="text-align: center;">
-      <button class="cta-btn" id="enter-sim-btn">To the simulation</button>
-    </div>
+    <button class="big-btn ghost-btn" style="margin-top:20px;" onclick="navBack()">← Back</button>
   </div>
-
-  <!-- SIMULATION SECTION (shown after click) -->
-  <div id="sim-section">
-
-    <button class="back-btn" id="back-btn">Back to about</button>
-
-    <div class="header">
-      <div class="year-badge">SIMULATION // 2026</div>
-      <h1 class="glitch">Q<span>-</span>DAY</h1>
-      <span class="header-tag">Quantum Surveillance Policy Simulator</span>
-      <p class="header-sub">You are a government intelligence director. Quantum decryption is 8 years away. Every decision you make today will shape what gets exposed — and to whom.</p>
-    </div>
-
-    <!-- Controls — full width, visually separated as input zone -->
-    <div class="panel controls controls-master">
-      <div class="controls-master-header">
-        <div>
-          <div class="panel-label" style="margin-bottom: 4px;">Your Policy Levers</div>
-          <p class="controls-hint">Adjust these three sliders — the panels below will react in real time.</p>
-        </div>
-        <div class="input-badge">INPUT</div>
-      </div>
-
-      <div class="sliders-row">
-        <div class="slider-group">
-          <div class="slider-header">
-            <span class="slider-name">Data collection rate</span>
-            <span class="slider-value danger" id="collect-val">50%</span>
-          </div>
-          <div class="slider-desc">How aggressively your agency harvests encrypted civilian data — messages, medical records, financial transactions.</div>
-          <input type="range" class="danger" id="collect" min="0" max="100" value="50">
-        </div>
-
-        <div class="slider-group">
-          <div class="slider-header">
-            <span class="slider-name">Quantum investment</span>
-            <span class="slider-value" id="invest-val">50%</span>
-          </div>
-          <div class="slider-desc">Budget allocated to accelerating your nation's quantum decryption capability — versus other public spending.</div>
-          <input type="range" id="invest" min="0" max="100" value="50">
-        </div>
-
-        <div class="slider-group">
-          <div class="slider-header">
-            <span class="slider-name">Public transparency</span>
-            <span class="slider-value warn" id="transparency-val">50%</span>
-          </div>
-          <div class="slider-desc">How much you disclose to citizens about the timeline, the data being stored, and its future use.</div>
-          <input type="range" class="warn" id="transparency" min="0" max="100" value="50">
-        </div>
-      </div>
-    </div>
-
-    <!-- Arrow connector -->
-    <div class="flow-arrow">
-      <div class="flow-arrow-line"></div>
-      <div class="flow-arrow-label">outputs</div>
-      <div class="flow-arrow-head">▼</div>
-    </div>
-
-    <div class="sim-grid">
-
-      <!-- Security dashboard -->
-      <div class="panel security">
-        <div class="panel-label">Security Gains</div>
-
-        <div class="numbers-row">
-          <div>
-            <div class="big-number blue" id="threats-val">—</div>
-            <div class="big-label">Threats intercepted / yr</div>
-          </div>
-          <div>
-            <div class="big-number blue" id="geo-val">—</div>
-            <div class="big-label">Geopolitical advantage</div>
-          </div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-header">
-            <span class="metric-name">National security score</span>
-            <span class="metric-value blue" id="sec-score">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill blue" id="sec-bar" style="width:50%"></div></div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-header">
-            <span class="metric-name">Intelligence advantage vs. adversaries</span>
-            <span class="metric-value green" id="intel-score">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill green" id="intel-bar" style="width:50%"></div></div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-header">
-            <span class="metric-name">Q-Day readiness</span>
-            <span class="metric-value amber" id="ready-score">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill amber" id="ready-bar" style="width:50%"></div></div>
-        </div>
-
-        <div class="q-clock">
-          <div class="clock-dot"></div>
-          <span id="qday-est">Estimated Q-Day: calculating...</span>
-        </div>
-      </div>
-
-      <!-- Rights dashboard -->
-      <div class="panel rights">
-        <div class="panel-label">Rights Violations</div>
-
-        <div class="numbers-row">
-          <div>
-            <div class="big-number red" id="records-val">—</div>
-            <div class="big-label">Citizen records stored</div>
-          </div>
-          <div>
-            <div class="big-number red" id="exposure-val">—</div>
-            <div class="big-label">Yrs until exposure</div>
-          </div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-header">
-            <span class="metric-name">Privacy violation index</span>
-            <span class="metric-value red" id="priv-score">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill red" id="priv-bar" style="width:50%"></div></div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-header">
-            <span class="metric-name">Democratic trust index</span>
-            <span class="metric-value blue" id="trust-score">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill blue" id="trust-bar" style="width:50%"></div></div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-header">
-            <span class="metric-name">Consent deficit</span>
-            <span class="metric-value red" id="consent-score">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill red" id="consent-bar" style="width:50%"></div></div>
-        </div>
-
-        <div class="q-clock">
-          <div class="clock-dot"></div>
-          <span id="at-risk">Citizens at risk: calculating...</span>
-        </div>
-      </div>
-
-      <!-- Dilemma panel -->
-      <div class="panel dilemma dilemma-panel">
-        <div class="panel-label">Ethical Tension</div>
-        <p class="dilemma-text" id="dilemma-text">Adjust the sliders to see how your decisions create ethical trade-offs.</p>
-
-        <div class="tension-row">
-          <span class="tension-label">Low tension</span>
-          <div class="tension-track">
-            <div class="tension-thumb" id="tension-thumb" style="left: 50%"></div>
-          </div>
-          <span class="tension-label">High tension</span>
-          <span class="tension-value" id="tension-val">—</span>
-        </div>
-
-        <div class="verdict-box">
-          <div class="verdict-title">// Framework note</div>
-          <span id="verdict-text">Move the sliders to generate a policy scenario.</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
 </div>
-<script src="js/simulator.js"></script>
-<script>
-  const enterBtn = document.getElementById('enter-sim-btn');
-  const backBtn  = document.getElementById('back-btn');
-  const aboutSection = document.getElementById('about-section');
-  const simSection   = document.getElementById('sim-section');
 
-  enterBtn.addEventListener('click', () => {
-    aboutSection.classList.add('fade-out');
-    setTimeout(() => {
-      aboutSection.style.display = 'none';
-      simSection.style.display = 'block';
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          simSection.classList.add('fade-in');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      });
-    }, 600);
-  });
+<!-- ═══ INTRO ═══ -->
+<div class="screen active" id="s-intro">
+  <div class="intro-stage">
 
-  backBtn.addEventListener('click', () => {
-    simSection.classList.remove('fade-in');
-    setTimeout(() => {
-      simSection.style.display = 'none';
-      aboutSection.style.display = 'block';
-      aboutSection.classList.remove('fade-out');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 600);
-  });
-</script>
+    <div class="islide active" id="sl-0">
+      <div class="splash-h1 glitch">YOUR<br><span class="r">FILE</span></div>
+      <div class="splash-sub">In a few years, a computer will read everything you thought was private.</div>
+    </div>
+
+    <div class="islide" id="sl-1">
+      <div class="q-giant">
+        <span style="color:var(--tm);">What if the messages</span><br>
+        <span class="lit">you sent today</span><br>
+        <span style="color:var(--tm);">could be read by</span><br>
+        <span class="danger">a stranger in 2034?</span>
+      </div>
+      <div style="font-size:12px;color:var(--tm);">Not a breach. Not a hack. Something quieter. Already happening.</div>
+    </div>
+
+    <div class="islide" id="sl-2">
+      <div style="font-size:11px;letter-spacing:0.2em;color:var(--tm);text-transform:uppercase;margin-bottom:18px;">// Your encrypted data — right now</div>
+      <div class="data-grid">
+        <div class="data-cell" id="dc-0"><span class="dc-icon">💬</span><span class="dc-label">Messages</span><span class="dc-val">WhatsApp · Signal · iMessage</span><span class="enc-badge">● ENCRYPTED</span></div>
+        <div class="data-cell" id="dc-1"><span class="dc-icon">🏥</span><span class="dc-label">Health records</span><span class="dc-val">GP apps · pharmacy · therapy</span><span class="enc-badge">● ENCRYPTED</span></div>
+        <div class="data-cell" id="dc-2"><span class="dc-icon">💳</span><span class="dc-label">Finances</span><span class="dc-val">Banking · transfers · Revolut</span><span class="enc-badge">● ENCRYPTED</span></div>
+        <div class="data-cell" id="dc-3"><span class="dc-icon">📍</span><span class="dc-label">Location</span><span class="dc-val">Maps · delivery · check-ins</span><span class="enc-badge">● ENCRYPTED</span></div>
+        <div class="data-cell" id="dc-4"><span class="dc-icon">🗳️</span><span class="dc-label">Political views</span><span class="dc-val">Posts · petitions · donations</span><span class="enc-badge">● ENCRYPTED</span></div>
+        <div class="data-cell" id="dc-5"><span class="dc-icon">❤️</span><span class="dc-label">Private life</span><span class="dc-val">Relationships · fears · secrets</span><span class="enc-badge">● ENCRYPTED</span></div>
+      </div>
+      <div style="font-size:13px;color:var(--ts);">Encrypted today. <span style="color:var(--amber);">But for how long?</span></div>
+    </div>
+
+    <div class="islide" id="sl-3">
+      <div class="hndl-word"><span class="dim">HARVEST</span> <span class="lit">NOW</span><br><span class="dim">DECRYPT</span> <span class="red">LATER</span></div>
+      <div class="hndl-desc">Intelligence agencies are <strong>collecting your encrypted data right now</strong> and storing it. They cannot read it. They are waiting for quantum computers to arrive. When they do, <strong> messages you sent since 2020 becomes readable.</strong></div>
+    </div>
+
+    <div class="islide" id="sl-4">
+      <div style="font-size:11px;letter-spacing:0.2em;color:var(--tm);text-transform:uppercase;margin-bottom:22px;">// The timelines</div>
+      <div class="tl-wrap">
+        <div class="tl-row" id="tl-1"><div class="tl-left"><div class="tl-dot now" style="margin-top:2px;"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">Current </div><div class="tl-ev"><span class="red"><strong>Governments worldwide have invested over $50 billion in quantum technologies, and funding is accelerating. Security research warns that adversaries may already be collecting encrypted data today for possible future decryption. (Desouches, 2024; SRI International, 2025; Swayne, 2026)</span></div></div></div>
+        <div class="tl-row" id="tl-2"><div class="tl-left"><div class="tl-dot warn" style="margin-top:2px;"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">2027–2029</div><div class="tl-ev">IBM targets fault-tolerant quantum. <span class="amber">NSA mandates post-quantum cryptography for classified systems starting 2027.</span></div></div></div>
+        <div class="tl-row" id="tl-3"><div class="tl-left"><div class="tl-dot now" style="margin-top:2px;"></div></div><div class="tl-right"><div class="tl-year">2030–2035</div><div class="tl-ev"><span class="red"><strong>Q-Day.</strong> A quantum computer breaks RSA encryption. Files stored since 2020 becomes readable. Your file opens.</span></div></div></div>
+      </div>
+      <div style="font-size:11px;letter-spacing:0.2em;color:var(--tm);text-transform:uppercase;margin-bottom:22px;">(IBM, n.d.; OECD, 2025)</div>
+    </div>
+
+    <div class="islide" id="sl-5">
+      <div class="fear-line s1">You cannot delete what they have collected.</div>
+      <div class="fear-line s2">You cannot opt out.</div>
+      <div class="fear-line s3">You were never asked.</div>
+      <div class="fear-line s4">YOU WERE NEVER TOLD.</div>
+      <div class="fear-sub">This is not a future threat. <strong>The collection is happening right now.</strong> The only question is: what should be done about it, and would you have agreed if you'd been asked?</div>
+    </div>
+
+    <div class="islide" id="sl-6">
+      <div class="cta-inner">
+        <div class="cta-label">// Interactive simulation</div>
+        <div class="cta-title">Now you must<br><span>design the rules.</span></div>
+        <div class="cta-desc">Before you find out what they have on you, you must decide what the policy should be. You don't yet know which side you're on.</div>
+        <button class="cta-btn" id="cta-btn" onclick="goToDilemma()">→ Enter the simulation</button>
+        <div class="cta-note">Estimated time: 4 minutes</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="skip-hint" id="skip-hint">click to advance</div>
+  <div class="progress-dots" id="prog-dots"></div>
+</div>
+
+<!-- ═══ SCREEN 2: DILEMMA ═══ -->
+<div class="screen" id="s-dilemma">
+  <div class="wrap">
+    <div class="sec-header">
+      <div class="badge">CLASSIFIED // INTERACTIVE</div>
+      <h2>The <span>Veil</span> of Ignorance</h2>
+      <p>You must design the surveillance policy before you find out which side you're on.</p>
+    </div>
+
+    <div class="scenario-box">
+      <div class="box-ey amber">// The scenario — 2026</div>
+      <div class="scenario-text">
+        A government program has been collecting encrypted civilian data since 2020. In approximately <span class="hl">8 years</span>, a quantum computer will decrypt everything stored.<br><br>
+        <strong>You are designing the policy. You do not yet know whether you will be the intelligence director or one of the 280 million people in the database.</strong>
+      </div>
+    </div>
+
+    <button class="veil-toggle" id="qc-toggle" onclick="toggleQC()" style="margin-top:10px;">
+      <span>// What is quantum computing?</span>
+      <span class="veil-arrow" id="qc-arrow">+</span>
+    </button>
+    <div class="veil-box" id="qc-box" style="display:none;margin-top:0;border-top:none;margin-bottom:0;">
+      <div class="veil-text">
+        <p style="margin-bottom:12px;">Classical computers process information as bits of either 0 or 1. Quantum computers use <strong>qubits</strong>, which can exist in multiple states simultaneously through a property called <em>superposition</em>. Combined with <em>entanglement</em>, where qubits become linked so the state of one instantly influences another, quantum computers can evaluate enormous numbers of possibilities at once. For certain problems, including breaking encryption, this makes them exponentially faster than anything that exists today.</p>
+        <p style="margin-bottom:12px;">As it utilises quantum mechanics to solve complex problems faster than even the most powerful classical computers. While emerging as a promising technology for scientific breakthroughs, it brings forward ethical concerns. There is a possibility that quantum computing can break through current encryption algorithms: "Most of our digital infrastructure, and basically anything we do online—whether it is video conferencing, sending e-mails, or accessing our online bank account—is encrypted through cryptographic protocols based on the difficulty of solving factorization problems (i.e., the RSA algorithm)" (Possati, 2023). These factorisation problems and algorithms that encryptions rely on are currently secure as it takes thousands of years to solve the problem; however, with quantum computing, the time to solve find these factors is completely reduced, making it possible to decrypt any communication and code and posing serious security concern: "Privacy and intelligence will be seriously damaged, and governments will face major problems as they try to defend their communications" (Possati, 2023).</p>
+        <div style="border-top:1px solid rgba(77,159,255,0.2);padding-top:12px;margin-top:4px;">
+          <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--tm);margin-bottom:10px;">// Watch more</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <a href="http://youtube.com/watch?v=RQWpF2Gb-gU" target="_blank" style="color:var(--blue);font-size:11px;text-decoration:none;display:flex;align-items:center;gap:6px;"><span style="color:var(--tm);">▶</span> But what is quantum computing? (Grover's Algorithm) — 3Blue1Brown</a>
+            <a href="https://www.youtube.com/watch?v=lvTqbM5Dq4Q" target="_blank" style="color:var(--blue);font-size:11px;text-decoration:none;display:flex;align-items:center;gap:6px;"><span style="color:var(--tm);">▶</span> How Quantum Computers Break Encryption | Shor's Algorithm Explained - minutephysics</a>
+            <a href="https://www.youtube.com/watch?v=e3fz3dqhN44" target="_blank" style="color:var(--blue);font-size:11px;text-decoration:none;display:flex;align-items:center;gap:6px;"><span style="color:var(--tm);">▶</span> Quantum Computers, explained with MKBHD - Cleo Abram and Marques Brownlee</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="veil-toggle" id="veil-toggle" onclick="toggleVeil()" style="margin-top:10px;">
+      <span>// What is the veil of ignorance?</span>
+      <span class="veil-arrow" id="veil-arrow">+</span>
+    </button>
+    <div class="veil-box" id="veil-box" style="display:none;margin-top:0;border-top:none;margin-bottom:0;">
+      <div class="veil-text">Philosopher John Rawls argued that <strong>fair rules are rules you would agree to before knowing your place in the system.</strong> What surveillance policy would you set if you didn't know whether you'd be the analyst or the subject?</div>
+    </div>
+
+    <div class="choice-label" style="margin-top:20px;">// What policy do you set?</div>
+    <div class="choices-grid" style="grid-template-columns:1fr 1fr 1fr;">
+      <button class="choice-btn allow" onclick="makeChoice('broad')">
+        <span class="ct">Broad collection</span>
+        All encrypted communications harvested. No warrants required.
+      </button>
+      <button class="choice-btn deny" onclick="makeChoice('targeted')">
+        <span class="ct">Targeted only</span>
+        Collection requires a judicial warrant. Citizens not harvested by default.
+      </button>
+      <button class="choice-btn allow" onclick="makeChoice('disclosed')">
+        <span class="ct">Broad but disclosed</span>
+        Collect broadly. Publish annual transparency reports. No opt-out.
+        <span class="cs">Basis: democratic accountability.</span>
+      </button>
+      <button class="choice-btn treaty" onclick="makeChoice('treaty')">
+        <span class="ct">International treaty</span>
+        No unilateral collection. Collaborate with other countries to pursue a global quantum arms control framework.
+        <span class="cs">OECD (2025)</span>
+      </button>
+      <button class="choice-btn deny" onclick="makeChoice('nothing')">
+        <span class="ct">No collection</span>
+        Unilateral refusal. Accept the strategic exposure this creates.
+        <span class="cs">Basis: rights violations cannot be justified by speculative benefit.</span>
+      </button>
+      <button class="choice-btn allow" onclick="makeChoice('consent_plus')" style="border-top:2px solid var(--green);">
+        <span class="ct">Opt-in + targeted suspects</span>
+        Collect data from consenting civilians only. Suspects under warrant targeted. Everyone else excluded.
+      </button>
+    </div>
+    <div style="text-align:center;margin-top:24px;">
+      <button class="nav-link" style="font-size:10px;letter-spacing:0.14em;" onclick="navAbout()">// About this tool</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 3: CONSEQUENCE (DRAMATIC STAGED REVEAL) ═══ -->
+<div class="screen" id="s-consequence">
+  <!-- Stage A: your policy -->
+  <div class="dramatic-reveal" id="dr-a">
+    <div class="dr-stage active" id="dra-1">
+      <div class="dr-eyebrow">// Locking in the policy</div>
+      <div class="dr-big" id="dra-headline">—</div>
+      <div class="dr-body" id="dra-body">—</div>
+      <button class="dr-next" onclick="drNext('a',2)" style="margin-bottom:12px;">→ See what this means in practice</button>
+      <button class="dr-next" onclick="restart()" style="border-color:var(--border);color:var(--tm);font-size:10px;padding:9px 24px;">← Go back and change my policy</button>
+    </div>
+    <div class="dr-stage" id="dra-2">
+      <div class="dr-eyebrow">// What your policy just created</div>
+
+      <p class="story-intro" id="story-intro-text">—</p>
+
+      <!-- Start countdown button -->
+      <div class="btn-center">
+        <button class="dr-next" id="start-countdown-btn" onclick="startCountdown()">→ Start the clock</button>
+      </div>
+
+      <!-- Year counter (hidden until started) -->
+      <div class="year-counter" id="year-counter-wrap" style="display:none;cursor:pointer;" title="Click to skip to Q-Day">
+        <div class="year-label"><span class="tick-dot" id="tick-dot"></span>current year</div>
+        <div class="year-display" id="year-display">2026</div>
+        <div class="year-sub" id="year-sub">Your policy takes effect. Collection begins.</div>
+      </div>
+
+      <!-- Timeline track (hidden until started) -->
+      <div id="year-track-wrap" style="display:none;">
+        <div class="year-track" style="max-width:520px;margin:0 auto 6px;">
+          <div class="year-fill" id="year-fill"></div>
+        </div>
+        <div class="year-marks">
+          <span class="year-mark lit">2026</span>
+          <span class="year-mark">2028</span>
+          <span class="year-mark">2030</span>
+          <span class="year-mark">2032</span>
+          <span class="year-mark danger">2034 — Q-Day</span>
+        </div>
+      </div>
+
+      <!-- File builds in row by row (hidden until Q-Day) -->
+      <div class="story-file" id="story-file" style="margin-top:24px;display:none;">
+        <div class="sf-head">
+          <div class="sf-class" id="sf-class-label">// Signals intelligence — subject file</div>
+          <div class="spill enc" id="sf-spill">● ENCRYPTED</div>
+        </div>
+        <div class="sf-rows" id="sf-rows"></div>
+      </div>
+
+      <!-- Tension bar (hidden until file revealed) -->
+      <div id="tension-wrap" style="display:none;">
+        <div class="tension-intro" id="tension-intro">—</div>
+        <div class="tension-bar" style="max-width:520px;margin:0 auto 8px;">
+          <span class="tb-label" style="min-width:80px;text-align:right;">More secure</span>
+          <div class="tb-track" style="flex:1;"><div class="tb-thumb" id="tb-thumb" style="left:5%"></div></div>
+          <span class="tb-label" style="min-width:80px;">More rights</span>
+        </div>
+        <div class="tension-caption" id="tension-caption">—</div>
+        <div class="fw-card" style="max-width:520px;margin:0 auto 24px;"><div class="box-ey amber" style="margin-bottom:8px;">// Ethical framework</div><div class="fw-text" id="fw-text">—</div></div>
+      </div>
+
+      <div class="btn-center">
+        <button class="dr-next" onclick="drNext('a','2b')" id="dra2-continue" style="opacity:0;transition:opacity 0.5s;">→ Continue</button>
+      </div>
+    </div>
+
+    <!-- TRANSITION STAGE: the reveal bridge -->
+    <div class="dr-stage" id="dra-2b">
+      <div class="transition-wrap" id="transition-wrap">
+        <div class="trans-line" id="tl-1">You chose a policy.</div>
+        <div class="trans-line dim" id="tl-2">You didn't know who you would become.</div>
+        <div class="trans-line" id="tl-3">You didn't know whose data you were deciding about.</div>
+        <div class="trans-line red-line" id="tl-4">Now it's time to find out.</div>
+        <div class="trans-glitch" id="trans-glitch">
+          <div id="glitch-word" style="display:block;width:100%;text-align:center;">IDENTITY</div>
+        </div>
+        <div class="trans-continue-wrap">
+          <button class="dr-next red-btn" id="trans-continue-btn" onclick="drNext('a',3)">→ Reveal</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dr-stage" id="dra-3">
+      <div class="dr-eyebrow" style="color:var(--red);">// The reveal</div>
+      <div class="dr-big" id="dra-reveal-title">You are <span class="red">the subject.</span></div>
+      <div class="dr-body" id="dra-reveal">—</div>
+      <button class="dr-next red-btn" onclick="goToDecrypt()">→ Simulate Q-Day — open your file</button>
+    </div>
+  </div>
+
+  <!-- Stage B: decryption + dilemma (scrollable) -->
+  <div id="dr-b" style="display:none;">
+    <div class="wrap">
+      <div class="sec-header">
+        <div class="badge" style="background:var(--red);">Q-DAY — FILE OPENED</div>
+        <h2 style="color:var(--red);">DECRYPTED</h2>
+        <p id="drb-subhead">—</p>
+      </div>
+      <div class="file-card glowing">
+        <div class="fc-head"><div class="fc-class">// Your file — Q-Day: fully decrypted</div><div class="spill dec">● DECRYPTED</div></div>
+        <div class="fc-rows" id="dec-rows"></div>
+      </div>
+
+      <!-- journalist-specific reveal — only shown for consent_plus -->
+      <div id="journalist-reveal" style="display:none;animation:fadein 0.6s ease;">
+        <div style="border:1px solid rgba(255,68,68,0.5);background:rgba(255,68,68,0.06);padding:0;margin-bottom:16px;">
+          <div style="background:rgba(255,68,68,0.15);padding:12px 16px;border-bottom:1px solid rgba(255,68,68,0.3);display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);">// Criminal classification notice — stream 2 transfer</div>
+            <div style="font-size:10px;color:var(--red);border:1px solid var(--red);padding:2px 8px;letter-spacing:0.1em;">CRIMINAL: CONFIRMED</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:11px;color:var(--tm);letter-spacing:0.1em;margin-bottom:10px;text-transform:uppercase;">Subject reclassification — effective 2029-11-03</div>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--s2);"><span style="font-size:11px;color:var(--ts);">Previous classification</span><span style="font-size:11px;color:var(--green);">CIVILIAN — NOT IN SYSTEM (opted out)</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--s2);"><span style="font-size:11px;color:var(--ts);">New classification</span><span style="font-size:11px;color:var(--red);">CRIMINAL — NATIONAL SECURITY ACT 2023 s.1</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--s2);"><span style="font-size:11px;color:var(--ts);">Basis</span><span style="font-size:11px;color:var(--red);">Investigative journalism — classified as criminal act</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--s2);"><span style="font-size:11px;color:var(--ts);">Collection stream</span><span style="font-size:11px;color:var(--red);">Transferred to Stream 2 — no warrant required</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--s2);"><span style="font-size:11px;color:var(--ts);">Subject opt-out status</span><span style="font-size:11px;color:var(--red);">VOID — criminal classification overrides consent decision</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--s2);"><span style="font-size:11px;color:var(--ts);">Retroactive collection</span><span style="font-size:11px;color:var(--red);">YES — data collected back to 2026</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);background:var(--surface);padding:0;margin-bottom:16px;">
+          <div style="background:var(--s2);padding:12px 16px;border-bottom:1px solid var(--border);">
+            <div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--tm);">// Suppressed stories — D-Notice issued 2034-02-11</div>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:8px;">
+            <div style="padding:12px;background:var(--s2);border-left:3px solid var(--red);">
+              <div style="font-size:12px;color:var(--tp);margin-bottom:4px;">Story 1 — <span style="color:var(--red);text-decoration:line-through;">CLASSIFIED</span></div>
+              <div style="font-size:11px;color:var(--ts);margin-bottom:6px;">Investigative report: government contract awarded to minister's former employer. Six sources. Two years of research. Ready for publication.</div>
+              <div style="font-size:10px;color:var(--red);">● SUPPRESSED — analyst pre-empted publication using decrypted source communications from 2029</div>
+            </div>
+            <div style="padding:12px;background:var(--s2);border-left:3px solid var(--red);">
+              <div style="font-size:12px;color:var(--tp);margin-bottom:4px;">Story 2 — <span style="color:var(--red);text-decoration:line-through;">CLASSIFIED</span></div>
+              <div style="font-size:11px;color:var(--ts);margin-bottom:6px;">Whistleblower report: unlawful deportations of asylum seekers. Source identity exposed via decrypted 2028 Signal messages.</div>
+              <div style="font-size:10px;color:var(--red);">● SOURCE IDENTITY COMPROMISED — whistleblower arrested under NSA 2023, s.1 before story published</div>
+            </div>
+            <div style="padding:12px;background:var(--s2);border-left:3px solid var(--amber);">
+              <div style="font-size:12px;color:var(--tp);margin-bottom:4px;">Story 3</div>
+              <div style="font-size:11px;color:var(--ts);margin-bottom:6px;">Profile of opposition politician. Published. Government requested D-Notice after decrypted communications showed source was a serving civil servant.</div>
+              <div style="font-size:10px;color:var(--amber);">● PUBLISHED — source subsequently dismissed and prosecuted</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <button class="veil-toggle" id="precedents-toggle" onclick="togglePrecedents()" style="border-color:rgba(255,187,51,0.3);color:var(--amber);">
+            <span>// Precedents as basis</span>
+            <span class="veil-arrow" id="precedents-arrow">+</span>
+          </button>
+          <div id="precedents-box" style="display:none;border:1px solid rgba(255,187,51,0.3);background:rgba(255,187,51,0.04);padding:16px 18px;border-top:none;">
+            <div style="font-size:12px;color:var(--ts);line-height:1.85;">
+              Updating...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rawls-box show" id="rawls-box">
+        <div class="box-ey red">// Lifting the Veil of ignorance</div>
+        <p class="rawls-q" id="rawls-q">—</p>
+        <div class="rawls-btns">
+          <button class="rawls-btn" onclick="rawlsAns('keep')">I would keep my policy</button>
+          <button class="rawls-btn" onclick="rawlsAns('change')">I would change my policy</button>
+        </div>
+        <div class="rawls-resp" id="rawls-resp"></div>
+      </div>
+      <button class="big-btn ghost-btn" style="display:none;" id="restart-btn" onclick="restart()">↺ Choose a different policy</button>
+      <button class="big-btn ghost-btn" style="display:none;margin-top:6px;" id="about-btn" onclick="navAbout()">// End Simulation - About this tool</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
 </body>
 </html>
